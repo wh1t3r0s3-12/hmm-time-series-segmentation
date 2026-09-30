@@ -4,7 +4,7 @@
 
 > 🚧 **Projet en cours.** Les résultats ci-dessous sont préliminaires et susceptibles d'évoluer ; voir [Statut et prochaines étapes](#statut-et-prochaines-étapes) en fin de page.
 
-> **En bref.** La détection de régimes du papier se reproduit presque au centième (fréquences, rendements et volatilités des régimes, matrice de transition). En revanche, dans un backtest walk-forward qui n'utilise que l'information disponible à chaque date, avec des frais, le Sharpe d'environ 2 annoncé par le papier tombe autour de 0,5, sans avantage significatif sur SPY. Plusieurs choix méthodologiques du papier expliquent l'écart.
+> **En bref.** La détection de régimes du papier se reproduit presque au centième (fréquences, rendements et volatilités des régimes, matrice de transition). En revanche, dans un backtest walk-forward qui n'utilise que l'information disponible à chaque date, avec des frais, le Sharpe d'environ 2 annoncé par le papier tombe autour de 0,5, sans avantage significatif sur SPY. Plusieurs choix méthodologiques du papier expliquent l'écart ([regard critique](#5-regard-critique-sur-le-papier)).
 
 ```
 ├── src/                    # code réutilisable
@@ -85,14 +85,22 @@ Résultats préliminaires complémentaires :
 - **Frais et allers-retours** : environ 14 changements de régime par an ; hystérésis, lissage des probabilités et durée minimale en limitent le nombre.
 - **Mars 2020** : la crise est détectée à la clôture du 24 février, 3 jours de bourse après le plus haut, mais le régime de crise ne se termine qu'après une large partie du rebond.
 
-## 5. Limites
+## 5. Regard critique sur le papier
+
+- **Une « volatilité » qui dépend du niveau de l'indice.** La variance des prix, en dollars², est proportionnelle au carré du prix : à agitation égale, elle est environ 13 fois plus grande à 250 $ qu'à 70 $. Reprise telle quelle dans le walk-forward, elle classe 96 % de 2022 en régime de crise ([`notebooks/03`](notebooks/03_partie_D_backtest.ipynb), D.2).
+- **Un nombre d'états justifié par la seule vraisemblance.** Elle augmente toujours avec le nombre d'états ; le BIC, qui pénalise la complexité, ne s'arrête pas à 3 (C.3).
+- **Des régimes « bull / bear » qui sont des régimes de volatilité, mesurés le jour même.** Le papier évalue les facteurs le jour où le régime est détecté, avec des régimes estimés sur toute la série : une partie de la relation est mécanique. Mesuré le lendemain, le Sharpe de SPY en régime calme passe d'environ 2,0 à 0,7 (D.1).
+- **Une règle de détection qui n'utilise pas le HMM.** Les auteurs ajustent des lois variable par variable (test de Kolmogorov-Smirnov) et appliquent des seuils de 0,3 et 0,5 sur des densités, dont la valeur dépend des unités. Ils n'utilisent ni la probabilité filtrée ni la matrice de transition, qui fait pourtant l'intérêt du modèle.
+- **Un Sharpe de 2 difficile à interpréter.** Sur 2,6 ans, l'erreur-type d'un Sharpe de 2 est d'environ 1 : l'intervalle de confiance contient 0. Il n'y a pas de frais, les 2 modèles utilisés sont retenus parmi 6 sans procédure décrite, dont un à levier ×2, et le test semble s'arrêter vers le 1er avril 2020 : le rendement du S&P 500 de leur Table 4 (−0,68 %) correspond au rendement de prix de SPY du 01/09/2017 au 01/04/2020, juste après le krach évité.
+
+## 6. Limites
 
 - Les modèles factoriels du papier ne sont pas reproductibles ; les facteurs de French sont des portefeuilles théoriques, bruts de leurs propres frais de rotation.
 - Les écarts de Sharpe entre stratégies restent inférieurs à une erreur-type : aucun n'est statistiquement significatif à ce stade.
 - Le modèle gaussien est mal spécifié pour une volatilité asymétrique et autocorrélée ; le choix de 3 états reste un jugement.
 - Les paramètres (fenêtre de 2 707 jours, 10 jours de volatilité, réestimation mensuelle, frais) ont été fixés à l'avance et non optimisés ; leur sensibilité n'est que partiellement étudiée.
 
-## 6. Reproduire
+## 7. Reproduire
 
 Python 3.12. Depuis la racine du dépôt :
 
