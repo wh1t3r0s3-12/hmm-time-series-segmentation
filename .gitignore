@@ -1,0 +1,15 @@
+# environnement Python
+.venv/
+__pycache__/
+*.pyc
+.ipynb_checkpoints/
+.pytest_cache/
+
+# données brutes : recréées par `python -m src.data` (section « Reproduire » du README)
+data/*.csv
+
+# cache des walk-forwards : recréé par scripts/run_walkforwards.py
+results/cache/
+
+# PDF (article, sujet)
+*.pdf

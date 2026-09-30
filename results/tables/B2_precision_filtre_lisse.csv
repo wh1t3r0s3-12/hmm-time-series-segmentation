@@ -1,0 +1,4 @@
+,précision (% jours bien classés),rappel crise (% jours de crise détectés)
+filtrée (causale),0.9436666666666667,0.9094202898550725
+lissée (voit le futur),0.9723333333333334,0.9480676328502415
+Viterbi (voit le futur),0.9693333333333334,0.9311594202898551

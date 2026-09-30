@@ -1,0 +1,16 @@
+# Versions utilisées pour produire les résultats du dépôt (Python 3.12)
+numpy==2.5.3
+pandas==3.0.5
+scipy==1.18.1
+scikit-learn==1.9.1
+hmmlearn==0.3.3
+statsmodels==0.15.0
+matplotlib==3.11.1
+yfinance==1.7.0
+tabulate==0.10.0
+pytest==9.1.1
+# exécution des notebooks en ligne de commande
+nbformat==5.11.1
+nbclient==0.11.0
+nbconvert==7.17.1
+ipykernel==7.3.0
